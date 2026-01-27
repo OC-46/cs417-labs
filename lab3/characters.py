@@ -109,5 +109,8 @@ for Character in army:
     print(Character.get_status())
     print(Character.summon_power())
 
-Character.equip_weapon(sword, bow)
-print(Character.summon_power())
+army[0].equip_weapon(sword)
+print(army[0].summon_power())
+army[1].equip_weapon(sword)
+print(army[1].summon_power())
+
