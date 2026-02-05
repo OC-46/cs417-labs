@@ -18,6 +18,17 @@ def test_parse_product_basic_returns_only_id_and_name(valid_product):
     assert list(response.keys()) == ["id", "name"]
 
 
+def test_parse_availability_when_in_stock(valid_product):
+    assert parse_availability(valid_product) is True
+
+def test_parse_availability_when_out_of_stock(product_out_of_stock):
+    assert parse_availability(product_out_of_stock) is False
+
+
+def test_parse_availability_when_field_missing(minimal_product):
+    assert parse_availability(minimal_product) is False
+
+
 
 
 
