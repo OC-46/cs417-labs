@@ -41,6 +41,8 @@ def parse_availability(response):
         return False
     elif response["in_stock"] is True:
         return True
-    else:        
+    elif response["in_stock"] is False:
+        return False
+    else:
         return False
     
