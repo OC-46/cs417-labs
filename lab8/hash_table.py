@@ -36,7 +36,9 @@ class HashTable:
         Returns:
             int: A bucket index between 0 and self.size - 1.
         """
-        pass  # TODO: implement this (1 line)
+        hash_value = hash(key)
+        index = hash_value % self.size
+        return index
 
     # ── TODO 2: Put ───────────────────────────────────────────────
 
@@ -55,7 +57,15 @@ class HashTable:
             key:   The key to insert.
             value: The value to associate with the key.
         """
-        pass  # TODO: implement this
+        index = self._hash(key)
+        bucket = self.table[index]
+
+        for pair in bucket:
+            if pair[0] == key:
+                pair[1] = value
+                return
+        bucket.append([key, value])
+        self.count += 1
 
     # ── TODO 3: Get ───────────────────────────────────────────────
 
@@ -77,7 +87,13 @@ class HashTable:
         Raises:
             KeyError: If the key is not found.
         """
-        pass  # TODO: implement this
+        index = self._hash(key)
+        bucket = self.table[index]
+
+        for pair in bucket:
+            if pair[0] == key:
+                return pair[1]
+        raise KeyError(f"Key not found: {key}")
 
     # ── TODO 4: Delete ────────────────────────────────────────────
 
@@ -97,7 +113,15 @@ class HashTable:
         Raises:
             KeyError: If the key is not found.
         """
-        pass  # TODO: implement this
+        index = self._hash(key)
+        bucket = self.table[index]
+
+        for i, pair in enumerate(bucket):
+            if pair[0] == key:
+                bucket.pop(i)
+                self.count -= 1
+                return
+        raise KeyError(f"Key not found: {key}")
 
     # ── Provided Methods (do not modify) ──────────────────────────
 
