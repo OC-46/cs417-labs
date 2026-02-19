@@ -93,7 +93,7 @@ class HashTable:
         for pair in bucket:
             if pair[0] == key:
                 return pair[1]
-        raise KeyError(f"Key not found: {key}")
+        raise KeyError(key)
 
     # ── TODO 4: Delete ────────────────────────────────────────────
 
@@ -121,7 +121,7 @@ class HashTable:
                 bucket.pop(i)
                 self.count -= 1
                 return
-        raise KeyError(f"Key not found: {key}")
+        raise KeyError(key)
 
     # ── Provided Methods (do not modify) ──────────────────────────
 
