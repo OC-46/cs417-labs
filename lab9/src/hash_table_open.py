@@ -68,7 +68,22 @@ class HashTableOpen:
             key:   The key to insert.
             value: The value to associate with the key.
         """
-        
+        start = self._hash(key)
+        for step in range(self.size):
+            index = (start + step) % self.size
+            slot = self.table[index]
+
+            if slot is None or slot is _TOMBSTONE:
+                # Found an empty or deleted slot, insert here
+                self.table[index] = (key, value)
+                self.count += 1
+                return
+            elif slot[0] == key:
+                # Key already exists, update value
+                self.table[index] = (key, value)
+                return
+
+        raise Exception("Hash table is full")
 
     # ── TODO 3: Get ───────────────────────────────────────────────
 
