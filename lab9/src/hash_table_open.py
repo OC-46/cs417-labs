@@ -149,7 +149,23 @@ class HashTableOpen:
         Raises:
             KeyError: If the key is not found.
         """
-        
+        start = self._hash(key)
+        for step in range(self.size):
+            index = (start + step) % self.size
+            slot = self.table[index]
+
+            if slot is None:
+                raise KeyError(key)
+            elif slot is _TOMBSTONE:
+                #keep probing
+                continue  
+            elif slot[0] == key:
+                #replace with tombstone and decrement count
+                self.table[index] = _TOMBSTONE
+                self.count -= 1
+                return
+
+        raise KeyError(key)
 
     # ── Provided Methods (do not modify) ──────────────────────────
 
