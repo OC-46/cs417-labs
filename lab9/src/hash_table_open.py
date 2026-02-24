@@ -74,12 +74,12 @@ class HashTableOpen:
             slot = self.table[index]
 
             if slot is None or slot is _TOMBSTONE:
-                # Found an empty or deleted slot, insert here
+                # insert value here
                 self.table[index] = (key, value)
                 self.count += 1
                 return
             elif slot[0] == key:
-                # Key already exists, update value
+                # key exists, update value
                 self.table[index] = (key, value)
                 return
 
@@ -111,7 +111,21 @@ class HashTableOpen:
         Raises:
             KeyError: If the key is not found.
         """
-        
+        start = self._hash(key)
+        for step in range(self.size):
+            index = (start + step) % self.size
+            slot = self.table[index]
+
+            if slot is None:
+                raise KeyError(key)
+            elif slot is _TOMBSTONE:
+                #keep probing
+                continue  
+            elif slot[0] == key:
+                #value gets returned
+                return slot[1]
+
+        raise KeyError(key)
 
     # ── TODO 4: Delete ────────────────────────────────────────────
 
@@ -135,21 +149,7 @@ class HashTableOpen:
         Raises:
             KeyError: If the key is not found.
         """
-        start = self._hash(key)
-        for step in range(self.size):
-            index = (start + step) % self.size
-            slot = self.table[index]
-
-            if slot is None:
-                raise KeyError(key)
-            elif slot is _TOMBSTONE:
-                continue  # Skip tombstones, keep probing
-            elif slot[0] == key:
-                self.table[index] = _TOMBSTONE  # Mark as deleted
-                self.count -= 1
-                return
-
-        raise KeyError(key)
+        
 
     # ── Provided Methods (do not modify) ──────────────────────────
 
