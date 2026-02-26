@@ -70,7 +70,8 @@ def binary_search(a_list, target):
             last = mid - 1
         elif target > a_list[mid]:
             first = mid + 1
-    return False
+    return False 
+
 
 
 
