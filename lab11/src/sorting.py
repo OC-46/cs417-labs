@@ -106,7 +106,16 @@ def insertion_sort(a_list):
     Returns:
         The same list, now sorted in ascending order.
     """
-    pass  # TODO: implement this
+    n = len(a_list)
+    for i in range (1, n):
+        current_value = a_list[i]
+        pos = i - 1
+        while pos >= 0 and a_list[pos] > current_value:
+            a_list[pos + 1] = a_list[pos]
+            pos -= 1
+        a_list[pos + 1] = current_value
+    return a_list
+
 
 
 # ── TODO 4: Counted Versions ────────────────────────────────────
