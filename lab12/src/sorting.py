@@ -126,9 +126,27 @@ def merge_sort(a_list):
     # Initialize: i = 0, j = 0, k = 0
     # Then write the three while loops described above.
 
-    pass  # TODO: replace this with the merge logic
+    i, j, k = 0, 0, 0
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            a_list[k] = left[i]
+            i += 1
+        else:
+            a_list[k] = right[j]
+            j += 1
+        k += 1
 
+    while i < len(left):
+        a_list[k] = left[i]
+        i += 1
+        k += 1
+
+    while j < len(right):
+        a_list[k] = right[j]
+        j += 1
+        k += 1
     return a_list
+
 
 
 # ── TODO 3: Quicksort — The Partition ─────────────────────────────
