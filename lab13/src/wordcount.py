@@ -24,8 +24,14 @@ def build_parser():
     # TODO: Add --min-length / -m (type=int, default=1)
     # TODO: Add --sort-by / -s (choices=["freq", "alpha"], default="freq")
     # TODO: Add --reverse / -r (action="store_true")
-    pass
-
+    parser = argparse.ArgumentParser(description = "argparse word counter")
+    parser.add_argument("filename", help="the text file to analyze")
+    parser.add_argument("-i", "--ignore-case", action="store_true", help="lowercase all words")
+    parser.add_argument("-t", "--top", type=int, default=None, help="show top N most frequent words")
+    parser.add_argument("-m", "--min-length", type=int, default=1, help="only count words with at least this many characters")
+    parser.add_argument("-s", "--sort-by", choices=["freq", "alpha"], default="freq", help="how to sort top words")
+    parser.add_argument("-r", "--reverse", action="store_true", help="reverse the sort order")
+    return parser
 
 def analyze(filepath, ignore_case=False, top=None, min_length=1,
             sort_by="freq", reverse=False):
@@ -57,7 +63,29 @@ def analyze(filepath, ignore_case=False, top=None, min_length=1,
     #   - Take the first 'top' entries
     #   - Return multi-line string:
     #       "<filename>: <count> words\n\nTop <N> words:\n  <word>: <count>\n  ..."
-    pass
+    try:
+        with open(filepath, "r") as f:
+            text = f.read()
+            words = text.split()
+            if ignore_case:
+                words = [word.lower() for word in words]
+            words = [word for word in words if len(word) >= min_length]
+            total_count = len(words)
+            if top is None:
+                return f"{filepath}: {total_count} words"
+            else:
+                counter = Counter(words)
+                if sort_by == "alpha":
+                    top_words = sorted(counter.items(), key=lambda x: x[0], reverse=reverse)[:top]
+                else:
+                    top_words = counter.most_common(top)
+                    if reverse:
+                        top_words = sorted(top_words, key=lambda x: x[1])
+                result_lines = [f"{filepath}: {total_count} words", "", f"Top {top} words:"]
+                result_lines += [f"  {word}: {count}" for word, count in top_words]
+                return "\n".join(result_lines)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Error: file '{filepath}' not found")
 
 
 def main():
@@ -66,7 +94,10 @@ def main():
     # TODO: Parse args
     # TODO: Call analyze with the parsed arguments
     # TODO: Print the result
-    pass
+    parser = build_parser()
+    args = parser.parse_args()
+    result = analyze(args.filename, args.ignore_case, args.top, args.min_length, args.sort_by, args.reverse)
+    print(result)
 
 
 if __name__ == "__main__":
