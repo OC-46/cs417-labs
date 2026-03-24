@@ -59,8 +59,14 @@ def inorder(node):
 
     TODO: implement this
     """
-    pass  # TODO: implement this
-
+    inorder_list = []
+    if node is None:
+        return []
+    else:
+        inorder_list.extend(inorder(node.left))
+        inorder_list.append(node.value)
+        inorder_list.extend(inorder(node.right))
+        return inorder_list
 
 # ── Task 3: Preorder Traversal (Self → Left → Right) ────────────────
 
@@ -72,7 +78,7 @@ def preorder(node):
 
     TODO: implement this
     """
-    pass  # TODO: implement this
+    
 
 
 # ── Task 4: Postorder Traversal (Left → Right → Self) ───────────────
@@ -85,7 +91,7 @@ def postorder(node):
 
     TODO: implement this
     """
-    pass  # TODO: implement this
+   
 
 
 # ── Task 5: Level-Order Traversal (BFS) ─────────────────────────────
