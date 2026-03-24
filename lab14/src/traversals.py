@@ -5,6 +5,8 @@ Implement four traversal algorithms for a Binary Search Tree.
 The BST module is provided — don't modify bst.py.
 """
 
+import collections
+
 from bst import BST
 
 
@@ -123,7 +125,19 @@ def levelorder(node):
 
     TODO: implement this
     """
-    pass  # TODO: implement this
+    if node is None:
+        return []
+    list = []
+    queue = collections.deque([node])
+    while queue:
+        current = queue.popleft()
+        list.append(current.value)
+        if current.left:
+            queue.append(current.left)
+        if current.right:
+            queue.append(current.right)
+    return list
+
 
 
 # ── Main ─────────────────────────────────────────────────────────────
