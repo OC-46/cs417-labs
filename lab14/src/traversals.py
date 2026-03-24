@@ -78,7 +78,14 @@ def preorder(node):
 
     TODO: implement this
     """
-    
+    preorder_list = []
+    if node is None:
+        return []
+    else:
+        preorder_list.append(node.value)
+        preorder_list.extend(preorder(node.left))
+        preorder_list.extend(preorder(node.right))
+        return preorder_list
 
 
 # ── Task 4: Postorder Traversal (Left → Right → Self) ───────────────
@@ -91,7 +98,7 @@ def postorder(node):
 
     TODO: implement this
     """
-   
+    
 
 
 # ── Task 5: Level-Order Traversal (BFS) ─────────────────────────────
