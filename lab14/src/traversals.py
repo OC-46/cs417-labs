@@ -98,7 +98,14 @@ def postorder(node):
 
     TODO: implement this
     """
-    
+    postorder_list = []
+    if node is None:
+        return []
+    else:
+        postorder_list.extend(postorder(node.left))
+        postorder_list.extend(postorder(node.right))
+        postorder_list.append(node.value)
+        return postorder_list
 
 
 # ── Task 5: Level-Order Traversal (BFS) ─────────────────────────────
