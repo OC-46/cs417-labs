@@ -94,7 +94,7 @@ def bfs(graph, start):
     visited = set()
     order = []
     frontier = deque()
-    start = start.strip()
+    start = start
     frontier.append(start)
     visited.add(start)
 
@@ -123,17 +123,23 @@ def dfs(graph, start):
     order = []
     stack = []
 
-    # TODO: Add `start` to the stack
+    start = start
+    stack.append(start)
+    visited.add(start)
 
     while stack:
-        # TODO: Pop the next node from the top of the stack
+        current = stack.pop()
+        order.append(current)
 
-        # TODO: If `current` has already been visited, skip it (continue).
-        #        Otherwise, mark it as visited and add it to the order.
-
+        if current not in visited:
+            continue
+        else:            
+            visited.add(current)
+        
         for neighbor in graph.get_neighbors(current):
-            pass
-            # TODO: Add the neighbor to the stack
+            if neighbor not in visited:
+                visited.add(neighbor)
+                stack.append(neighbor)
 
     return order
 
