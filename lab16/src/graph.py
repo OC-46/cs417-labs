@@ -69,9 +69,17 @@ def build_lab_graph():
     Edges: A-B, A-C, B-D, C-E, D-F, E-F
     """
     g = Graph()
+    add_edge = g.add_edge
+    for node in "ABCDEF":
+        g.add_node(node)
 
-    # TODO: Add all six nodes (A through F)
-    # TODO: Add all six edges
+    # Add all six edges
+    add_edge("A", "B")
+    add_edge("A", "C")
+    add_edge("B", "D")
+    add_edge("C", "E")
+    add_edge("D", "F")
+    add_edge("E", "F")
 
     return g
 
