@@ -51,7 +51,6 @@ class DAGNode:
 
         Args:
             node: The DAGNode that this task depends on.
-
         Raises:
             CycleError: If adding this dependency would create a cycle.
         """
