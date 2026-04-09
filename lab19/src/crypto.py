@@ -160,4 +160,11 @@ def get_price_cached(coin_id: str, api_key: str, cache: CoinCache) -> float:
     # 1. Try cache.get(coin_id)
     # 2. If not None, return it (cache hit!)
     # 3. If None, call get_price(), store with cache.put(), return price
-    pass
+    cached_price = cache.get(coin_id)
+    if cached_price is not None:
+        return cached_price
+    if cached_price is None:
+        price = get_price(coin_id, api_key)
+        cache.put(coin_id, price)
+        return price
+    
