@@ -5,6 +5,8 @@ through the tasks. The TODOs tell you what to add and where.
 """
 
 from fastapi import FastAPI
+from fastapi import BackgroundTasks
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -109,10 +111,30 @@ def reset_completed():
 # Create GET /grade-jobs/{job_id} to check job status.
 
 # TODO: jobs = {}
+jobs = {}
 # TODO: job_submission_map = {}
-
+job_submission_map = {}
 # TODO: POST /grade-async endpoint
+@app.post("/grade-async")
+def grade_async(request: dict, background_tasks: BackgroundTasks):
+    student = request["student"]
+    lab = request["lab"]
+    submission_id = f"{student}-lab{lab}"
+    job_id = f"job-{len(jobs) + 1}"
+    job_submission_map[job_id] = submission_id
+    background_tasks.add_task(run_grade_job, student, lab, submission_id, job_id)
+    return JSONResponse(status_code=202, content={"status": "accepted", "job_id": job_id})
 
 # TODO: run_grade_job helper function
-
+def run_grade_job(student: str, lab: int, submission_id: str, job_id: str):
+    import time
+    time.sleep(3)  # Simulate long grading time
+    score = grading.grade(student, lab)
+    result = {"student": student, "lab": lab, "score": score}
+    jobs[job_id] = {"status": "complete", "result": result}
 # TODO: GET /grade-jobs/{job_id} endpoint
+@app.get("/grade-jobs/{job_id}")
+def get_grade_job(job_id: str):
+    if job_id not in jobs:
+        return JSONResponse(status_code=404, content={"error": "job not found"})
+    return jobs[job_id]
