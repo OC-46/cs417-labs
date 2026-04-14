@@ -16,15 +16,15 @@ app = FastAPI()
 # endpoint that accepts {"student": ..., "lab": ...} and returns the score.
 
 # TODO: import grade from grading
+import grading
 
 # TODO: POST /grade endpoint
-
-import grading
 @app.post("/grade")
-def grade_student(student: str, lab: str):
+def grade_endpoint(request: dict):
+    student = request["student"]
+    lab = request["lab"]
     score = grading.grade(student, lab)
     return {"student": student, "lab": lab, "score": score}
-
 
 
 # ---------------------------------------------------------------------------
@@ -37,26 +37,11 @@ def grade_student(student: str, lab: str):
 
 # TODO: grading_log = []
 
-grading_log = []
-
 # TODO: update POST /grade to log events and support "slow"
 
-@app.post("/grade")
-def grade_student(student: str, lab: str, slow: bool = True):
-    score = grading.grade(student, lab, slow)
-    grading_log.append({"student": student, "lab": lab, "slow": slow})
-
 # TODO: GET /log endpoint
-@app.get("/log")
-def get_log():
-    return {"entries": grading_log}
 
 # TODO: POST /reset-log endpoint
-
-@app.post("/reset-log")
-def reset_log():
-    grading_log.clear()
-
 
 
 # ---------------------------------------------------------------------------
@@ -69,31 +54,10 @@ def reset_log():
 # Add POST /reset-completed endpoint.
 
 # TODO: completed = {}
-completed = {}
 
 # TODO: update POST /grade to check submission_id
 
-@app.post("/grade")
-def grade_student(student: str, lab: str, slow: bool = True, submission_id: str = None):
-    if submission_id and submission_id in completed:
-        return completed[submission_id]
-
-    score = grading.grade(student, lab, slow)
-    result = {"student": student, "lab": lab, "score": score}
-    grading_log.append({"student": student, "lab": lab, "slow": slow})
-
-    if submission_id:
-        completed[submission_id] = result
-
-    return result
-
-
 # TODO: POST /reset-completed endpoint
-
-@app.post("/reset-completed")
-def reset_completed():
-    completed.clear()
-
 
 
 # ---------------------------------------------------------------------------
@@ -108,7 +72,6 @@ def reset_completed():
 # Create GET /grade-jobs/{job_id} to check job status.
 
 # TODO: jobs = {}
-
 # TODO: job_submission_map = {}
 
 # TODO: POST /grade-async endpoint
