@@ -22,7 +22,8 @@ app = FastAPI()
 import grading
 @app.post("/grade")
 def grade_student(student: str, lab: str):
-    return grading.grade(student, lab)
+    score = grading.grade(student, lab)
+    return {"student": student, "lab": lab, "score": score}
 
 
 
@@ -43,7 +44,7 @@ grading_log = []
 @app.post("/grade")
 def grade_student(student: str, lab: str, slow: bool = True):
     score = grading.grade(student, lab, slow)
-    grading log.append({"student": student, "lab"})
+    grading_log.append({"student": student, "lab": lab, "slow": slow})
 
 # TODO: GET /log endpoint
 @app.get("/log")
@@ -55,7 +56,7 @@ def get_log():
 @app.post("/reset-log")
 def reset_log():
     grading_log.clear()
-    
+
 
 
 # ---------------------------------------------------------------------------
@@ -69,9 +70,14 @@ def reset_log():
 
 # TODO: completed = {}
 
+
 # TODO: update POST /grade to check submission_id
 
+
+
 # TODO: POST /reset-completed endpoint
+
+
 
 
 # ---------------------------------------------------------------------------
@@ -86,6 +92,7 @@ def reset_log():
 # Create GET /grade-jobs/{job_id} to check job status.
 
 # TODO: jobs = {}
+
 # TODO: job_submission_map = {}
 
 # TODO: POST /grade-async endpoint
