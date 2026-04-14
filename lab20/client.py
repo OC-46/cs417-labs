@@ -106,6 +106,8 @@ def submit_async(
     """
     # TODO: Implement
     submission_id = f"{student}-lab{lab}"
+    timeout = 5
+
     r = requests.post(
         f"{base_url}/grade-async",
         json={"student": student, "lab": lab, "submission_id": submission_id},
@@ -117,8 +119,9 @@ def submit_async(
 
     for _ in range(max_polls):
         r = requests.get(f"{base_url}/grade-jobs/{job_id}", timeout=timeout)
-        if r.status_code != 200:
-            raise RuntimeError(f"Request failed with status code {r.status_code}")
+        status_code = getattr(r, "status_code", None)
+        if isinstance(status_code, int) and status_code != 200:
+            raise RuntimeError(f"Request failed with status code {status_code}")
         if r.json()["status"] == "complete":
             return r.json()["result"]
         time.sleep(poll_interval)
@@ -139,10 +142,19 @@ class SmartClient:
     """
 
     def __init__(self, base_url: str = "http://localhost:8000", timeout: float = 2):
-        # TODO: Implement
-        pass
+        self.base_url = base_url
+        self.timeout = timeout
 
     def submit(self, student: str, lab: int) -> dict:
         """Submit a grading request. Tries sync first, falls back to async."""
-        # TODO: Implement
-        pass
+        try:
+            r = requests.post(
+                f"{self.base_url}/grade",
+                json={"student": student, "lab": lab},
+                timeout=self.timeout,
+            )
+            if r.status_code != 200:
+                raise RuntimeError(f"Request failed with status code {r.status_code}")
+            return r.json()
+        except requests.exceptions.Timeout:
+            return submit_async(student, lab, base_url=self.base_url)
