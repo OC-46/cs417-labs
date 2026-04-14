@@ -36,13 +36,28 @@ def grade_endpoint(request: dict):
 # Add GET /log and POST /reset-log endpoints.
 
 # TODO: grading_log = []
+grading_log = []
 
 # TODO: update POST /grade to log events and support "slow"
+@app.post("/grade")
+def grade_endpoint(request: dict):
+    student = request["student"]
+    lab = request["lab"]
+    slow = request.get("slow", False)
+    score = grading.grade(student, lab, slow=slow)
+    grading_log.append({"student": student, "lab": lab})
+    return {"student": student, "lab": lab, "score": score}
 
 # TODO: GET /log endpoint
+@app.get("/log")
+def get_log():
+    return {"entries": grading_log}
 
 # TODO: POST /reset-log endpoint
-
+@app.post("/reset-log")
+def reset_log():
+    grading_log.clear()
+    return {"entries": grading_log}
 
 # ---------------------------------------------------------------------------
 # Task 3: Idempotency Makes Retries Safe
