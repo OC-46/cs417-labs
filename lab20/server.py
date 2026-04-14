@@ -69,10 +69,32 @@ def reset_log():
 # Add POST /reset-completed endpoint.
 
 # TODO: completed = {}
+completed = {}
 
 # TODO: update POST /grade to check submission_id
+@app.post("/grade")
+def grade_endpoint(request: dict):
+    student = request["student"]
+    lab = request["lab"]
+    slow = request.get("slow", False)
+    submission_id = request.get("submission_id")
+
+    if submission_id and submission_id in completed:
+        return completed[submission_id]
+
+    score = grading.grade(student, lab, slow=slow)
+    result = {"student": student, "lab": lab, "score": score}
+    grading_log.append({"student": student, "lab": lab})
+    if submission_id:
+        completed[submission_id] = result
+    return result
 
 # TODO: POST /reset-completed endpoint
+@app.post("/reset-completed")
+def reset_completed():
+    completed.clear()
+    return {"completed": completed}
+
 
 
 # ---------------------------------------------------------------------------
