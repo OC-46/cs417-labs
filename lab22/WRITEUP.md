@@ -67,3 +67,8 @@ Scenario B — hot path. The function runs 10,000 times per second on the reques
 
 MY ranking would stay the same for this scenario, It was pretty clear in the testing that scenario_a was much faster when it came to reqime 2. The heapq function is clearly better and hendling the much higher level of unique characters much better then either of the other options. This solution while still not quite being as simple as solution_b is, it is still pretty simple and cand be understood when reading though the code ofr the first time. If we are looking for good speed and can handle the sheer number or requests solution_a is the best for that.
 
+part 5:
+
+solution_c to be rejected-
+
+The problem with solution_c is it mostly gets the job done, however it lacks speed or efficency. There are many built in operations such as the ones used in solution_a and b but building your own functions takes time when there is already functions out there that have been optomized for this task. C was also the only preogram that returned somthing it was not suppost to in the return. This is still a solution to the problem just not the ideal solution that needs to be implemented. 
