@@ -1,4 +1,12 @@
-# Lab 22 Writeup
+# Lab 22: Part 1 — Predictions
+
+## Prediction 1: Which variant breaks first as input size grows? Why?
+
+Solution C would most likely break first because it uses a simple for loop to count the number of times each item appears in the list. This means for each item the program needs to walk through the entire list to count the number of times that item appears. This means a high time complexity of O(n^2) I believe.
+
+## Prediction 2: Which variant would you trust to run at 3am during an outage? "Trust" can mean speed, readability, edge-case handling — name what you mean.
+
+For me I would trust solution_a. It is the most readable with a less amount of code written. It uses the Counter class which is built for manually counting items in a list rather than building that function yourself. It also uses the heapq.nlargest function to get the most frequent items instead of building that function yourself as well.# Lab 22 Writeup
 
 ## Part 1: Predict Before You Test
 
